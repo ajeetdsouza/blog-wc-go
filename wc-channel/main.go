@@ -63,15 +63,13 @@ func main() {
 
 func ChunkCounter(chunks <-chan Chunk, counts chan<- Count) {
 	totalCount := Count{}
-	for {
-		chunk, ok := <-chunks
-		if !ok {
-			break
-		}
+
+	for chunk := range chunks {
 		count := GetCount(chunk)
 		totalCount.LineCount += count.LineCount
 		totalCount.WordCount += count.WordCount
 	}
+
 	counts <- totalCount
 }
 
